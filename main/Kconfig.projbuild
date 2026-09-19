@@ -1,0 +1,40 @@
+menu "Example Configuration"
+
+    choice ROS2_TRANSPORT
+        prompt "ROS2 message transport"
+        default ROS2_TRANSPORT_USB_CDC
+        help
+            Select the physical transport used by the ROS2 message protocol.
+
+        config ROS2_TRANSPORT_USB_CDC
+            bool "USB CDC"
+
+        config ROS2_TRANSPORT_UART
+            bool "UART"
+    endchoice
+
+    config ROS2_TRANSPORT_UART_BAUD_RATE
+        int "ROS2 UART baud rate"
+        default 115200
+        depends on ROS2_TRANSPORT_UART
+
+    config ROS2_TRANSPORT_UART_TX_GPIO
+        int "ROS2 UART TX GPIO"
+        default 43
+        depends on ROS2_TRANSPORT_UART
+
+    config ROS2_TRANSPORT_UART_RX_GPIO
+        int "ROS2 UART RX GPIO"
+        default 44
+        depends on ROS2_TRANSPORT_UART
+
+    config SERIAL_STUDIO_DEBUG
+        bool "Enable log that can be parsed by Serial Studio"
+        default n
+        help
+            Enable this option, the example will print a string at runtime with a specific format,
+            which can be parsed by the Serial Studio tool.
+            With the "serial-studio-dashboard.json" template file provided in this example,
+            user can observe the speed in a curve window in the Serial Studio.
+
+endmenu

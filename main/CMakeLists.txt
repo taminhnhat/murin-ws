@@ -1,0 +1,52 @@
+set(COMPONENT_SRCS
+    "app/main.cpp"
+    "modules/battery/battery.c"
+    "modules/battery/ina219.c"
+    "modules/diag/diag.c"
+    "modules/led/board_led.c"
+    "modules/link/framed_link.c"
+    "modules/monitor/monitor.c"
+    "modules/navigation/bno085.c"
+    "modules/navigation/navigation.c"
+    "modules/motor/diff_drive.c"
+    "modules/nvs/flash_storage.c"
+    "modules/ros2/ros2_msgs.c"
+    "modules/rp3/rp3_receiver.c"
+    "modules/shell/shell_command.c"
+    "modules/shell/shell_uart.c"
+    "modules/system_log/system_log.c"
+    "modules/usb/usb_bridge.c")
+
+set(COMPONENT_INCLUDE_DIRS
+    "."
+    "config"
+    "modules/battery"
+    "modules/diag"
+    "modules/led"
+    "modules/link"
+    "modules/monitor"
+    "modules/navigation"
+    "modules/motor"
+    "modules/nvs"
+    "modules/ros2"
+    "modules/rp3"
+    "modules/shell"
+    "modules/system_log"
+    "modules/usb")
+
+set(COMPONENT_PRIV_REQUIRES
+    console
+    esp_driver_gpio
+    esp_driver_i2c
+    esp_driver_ledc
+    esp_driver_pcnt
+    esp_driver_rmt
+    esp_driver_spi
+    esp_driver_uart
+    esp_timer
+    nvs_flash
+    tinyusb)
+
+idf_component_register(
+  SRCS ${COMPONENT_SRCS} INCLUDE_DIRS ${COMPONENT_INCLUDE_DIRS} PRIV_REQUIRES
+  ${COMPONENT_PRIV_REQUIRES})

@@ -1,0 +1,79 @@
+name: GoogleTest and Coverage
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gtest_coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential clang cmake llvm ninja-build
+
+      - name: Cache CMake FetchContent deps
+        uses: actions/cache@v4
+        with:
+          path: tests/gtest/build-coverage/_deps
+          key: ${{ runner.os }}-gtest-${{ hashFiles('tests/gtest/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-gtest-
+
+      - name: Configure coverage build
+        env:
+          CC: clang
+          CXX: clang++
+        run: >-
+          cmake -S tests/gtest -B tests/gtest/build-coverage -G Ninja
+          -DCMAKE_BUILD_TYPE=Debug
+          "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping"
+          "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping"
+
+      - name: Build tests
+        run: cmake --build tests/gtest/build-coverage --parallel
+
+      - name: Run GoogleTests
+        env:
+          LLVM_PROFILE_FILE: ${{ github.workspace }}/tests/gtest/build-coverage/%p-%m.profraw
+        run: ctest --test-dir tests/gtest/build-coverage --output-on-failure
+
+      - name: Merge coverage profiles
+        run: >-
+          llvm-profdata merge -sparse
+          tests/gtest/build-coverage/*.profraw
+          -o tests/gtest/build-coverage/coverage.profdata
+
+      - name: Generate coverage reports
+        run: |
+          llvm-cov report tests/gtest/build-coverage/ros2_msgs_unittest \
+            -object=tests/gtest/build-coverage/flash_storage_unittest \
+            -instr-profile=tests/gtest/build-coverage/coverage.profdata \
+            main/modules/ros2/ros2_msgs.c \
+            main/modules/nvs/flash_storage.c \
+            | tee tests/gtest/build-coverage/coverage-summary.txt
+
+          llvm-cov show tests/gtest/build-coverage/ros2_msgs_unittest \
+            -object=tests/gtest/build-coverage/flash_storage_unittest \
+            -instr-profile=tests/gtest/build-coverage/coverage.profdata \
+            -format=html \
+            -output-dir=tests/gtest/build-coverage/html \
+            -show-line-counts-or-regions \
+            -show-branches=count \
+            main/modules/ros2/ros2_msgs.c \
+            main/modules/nvs/flash_storage.c
+
+          {
+            echo "## LLVM Coverage"
+            echo '```text'
+            cat tests/gtest/build-coverage/coverage-summary.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML coverage report
+        uses: actions/upload-artifact@v7
+        with:
+          name: gtest-coverage-report
+          path: tests/gtest/build-coverage/html
+          if-no-files-found: error

@@ -1,0 +1,10 @@
+cdc_port: "COM12"
+console_port: "COM10"
+console_baudrate: 115200
+baudrate: 2000000
+perf_iterations: 200
+perf_warmup_iterations: 10
+perf_ack_timeout: 0.5
+perf_max_avg_ack_ms: 50
+perf_max_p95_ack_ms: 200
+stress_duration_s: 1
