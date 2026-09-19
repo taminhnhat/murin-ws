@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="murin_ros2_control" params="name prefix use_mock_hardware disable_commands:=false transport:=simulation serial_port:='' baud_rate:=2000000 wheel_radius:=0.015 require_bridge:=false">
+
+    <ros2_control name="${name}" type="system">
+      <xacro:unless value="${use_mock_hardware}">
+        <hardware>
+          <plugin>murin_control/MurinSystemHardware</plugin>
+          <param name="transport">${transport}</param>
+          <xacro:if value="${serial_port != ''}">
+            <param name="serial_port">${serial_port}</param>
+          </xacro:if>
+          <param name="baud_rate">${baud_rate}</param>
+          <param name="wheel_radius">${wheel_radius}</param>
+          <param name="require_bridge">${require_bridge}</param>
+        </hardware>
+      </xacro:unless>
+      <xacro:if value="${use_mock_hardware}">
+        <hardware>
+          <plugin>mock_components/GenericSystem</plugin>
+          <param name="calculate_dynamics">true</param>
+          <param name="disable_commands">${disable_commands}</param>
+        </hardware>
+      </xacro:if>
+      <joint name="${prefix}left_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}right_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
+
+</robot>

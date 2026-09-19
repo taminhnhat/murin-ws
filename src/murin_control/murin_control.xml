@@ -1,0 +1,9 @@
+<library path="murin_control">
+  <class name="murin_control/MurinSystemHardware"
+         type="murin_control::MurinSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Murin differential-drive hardware with serial and simulation transports, velocity commands, position and velocity feedback, and a watchdog for the separate ROS Socket.IO bridge.
+    </description>
+  </class>
+</library>

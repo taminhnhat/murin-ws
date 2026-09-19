@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Schematic body dimensions; replace with measured chassis geometry as needed. -->
+  <xacro:macro name="murin_description" params="prefix wheel_radius wheel_separation">
+    <link name="${prefix}base_link">
+      <visual>
+        <origin xyz="0 0 0.025"/>
+        <geometry><box size="0.12 0.07 0.03"/></geometry>
+        <material name="murin_body"><color rgba="0.2 0.4 0.7 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.025"/>
+        <geometry><box size="0.12 0.07 0.03"/></geometry>
+      </collision>
+    </link>
+    <xacro:macro name="murin_wheel" params="side sign">
+      <link name="${prefix}${side}_wheel">
+        <visual>
+          <origin rpy="${pi / 2} 0 0"/>
+          <geometry><cylinder radius="${wheel_radius}" length="0.01"/></geometry>
+          <material name="murin_${side}_tire"><color rgba="0.1 0.1 0.1 1"/></material>
+        </visual>
+        <collision>
+          <origin rpy="${pi / 2} 0 0"/>
+          <geometry><cylinder radius="${wheel_radius}" length="0.01"/></geometry>
+        </collision>
+      </link>
+      <joint name="${prefix}${side}_wheel_joint" type="continuous">
+        <parent link="${prefix}base_link"/>
+        <child link="${prefix}${side}_wheel"/>
+        <origin xyz="0 ${sign * wheel_separation / 2} 0"/>
+        <axis xyz="0 1 0"/>
+      </joint>
+    </xacro:macro>
+    <xacro:murin_wheel side="left" sign="1"/>
+    <xacro:murin_wheel side="right" sign="-1"/>
+  </xacro:macro>
+</robot>
