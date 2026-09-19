@@ -72,3 +72,6 @@ The integration test needs the adjacent web dependencies (`npm ci --ignore-scrip
 Requires `clang-format`, `ruff`, and `cmake-format` on PATH. Install the Python tools in your active virtual environment with `python -m pip install -r requirements.txt`. Formatting does not require ROS activation or access to hardware.
 
 The script formats C/C++, Python (including the extensionless bridge executable), and CMake files under `src/murin_control` and `scripts`. It uses the workspace `.clang-format`, based on the upstream ROS demo style. Upstream demos, symlinks, build/install/log directories, virtual environments, and caches are excluded. All required tools are checked before any files are modified. This entry point is Bash-only.
+
+
+### JUST A TEST
