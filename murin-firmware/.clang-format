@@ -1,0 +1,9 @@
+BasedOnStyle: LLVM
+Language: Cpp
+ColumnLimit: 120
+
+# Keep a blank line between struct/class/enum and other definition blocks.
+SeparateDefinitionBlocks: Always
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true

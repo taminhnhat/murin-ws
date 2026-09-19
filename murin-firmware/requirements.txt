@@ -1,0 +1,5 @@
+pyserial
+pytest
+pyyaml
+ruff
+cmakelang

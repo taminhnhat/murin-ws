@@ -1,0 +1,9 @@
+Checks: >
+  bugprone-*,
+  clang-analyzer-*,
+  performance-*,
+  portability-*,
+  readability-*
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*main/modules/.*'
