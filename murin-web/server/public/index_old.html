@@ -1,0 +1,342 @@
+<!doctype html>
+<!--
+ The MIT License (MIT)
+
+ This file is part of the JoyStick Project (https://github.com/bobboteck/JoyStick).
+ Copyright (c) 2015 Roberto D'Amico (Bobboteck).
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+<html>
+  <head>
+    <title>Joy</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Example page of use pure Javascript JoyStick"
+    />
+    <meta name="author" content="Roberto D'Amico" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="https://bobboteck.github.io/img/roberto-damico-bobboteck.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="/css/controller.css" />
+  </head>
+
+  <body>
+    <div id="tabHeader">
+      <button
+        class="tablink"
+        onclick="openPage('Home', this, 'orange')"
+        id="homeButton"
+      >
+        Manual
+      </button>
+      <button
+        class="tablink"
+        onclick="openPage('News', this, 'orange')"
+        id="newsButton"
+      >
+        Console
+      </button>
+      <button
+        class="tablink"
+        onclick="openPage('Contact', this, 'orange')"
+        id="contactButton"
+      >
+        Control
+      </button>
+      <button
+        class="tablink"
+        onclick="openPage('About', this, 'orange')"
+        id="aboutButton"
+      >
+        Graph
+      </button>
+    </div>
+    <div class="row page-shell" id="vitualjoystick">
+      <div id="leftPanel" class="controlPanel">
+        <div id="joy1Div" class="joystick-host"></div>
+      </div>
+
+      <div id="centerPanel" class="columnCetral">
+        <div id="Home" class="tabcontent">
+          <div id="leftVideoContainer">
+            <p id="deviceName">Vitual JoyStick</p>
+            <p id="agentType">Unknown Web browser</p>
+          </div>
+          <div id="videoContainer">
+            <!-- <img id="robot_view" src="http://172.27.1.252:8080/stream?topic=/camera/color/image_raw"> -->
+            <div class="camera-overlay">
+              <button id="startCameraButton" class="camera-button">
+                <span id="startCameraIcon" class="material-symbols-outlined"
+                  >play_circle</span
+                >
+              </button>
+            </div>
+          </div>
+          <div id="rightVideoContainer">
+            <div class="canvas-container">
+              <canvas class="chart-full" id="wheelVelocityChart"></canvas>
+            </div>
+            <div class="canvas-container">
+              <canvas class="chart-full" id="mAChart"></canvas>
+            </div>
+            <div class="canvas-container">
+              <canvas class="chart-full" id="velocityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div id="News" class="tabcontent">
+          <div class="vertialTab">
+            <button
+              class="verticaltablink"
+              onclick="openMiniTab(event, 'Service')"
+            >
+              Service
+            </button>
+            <button
+              class="verticaltablink"
+              onclick="openMiniTab(event, 'Pipe')"
+              id="minitabdefaultOpen"
+            >
+              Pipe
+            </button>
+            <button
+              class="verticaltablink"
+              onclick="openMiniTab(event, 'Node')"
+            >
+              Node
+            </button>
+            <button
+              class="verticaltablink"
+              onclick="openMiniTab(event, 'Topic')"
+            >
+              Topic
+            </button>
+            <button
+              class="verticaltablink"
+              onclick="openMiniTab(event, 'Terminal')"
+            >
+              Terminal
+            </button>
+          </div>
+          <div id="Pipe" class="minitabcontent">
+            <div id="messageBox" class="console-panel">
+              <ul id="messages"></ul>
+            </div>
+          </div>
+
+          <div id="Service" class="minitabcontent">
+            <div class="inline-flex">
+              <table id="serviceTable">
+                <tr>
+                  <th>service</th>
+                  <th>loaded</th>
+                  <th>active</th>
+                  <th>restart</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="Node" class="minitabcontent">
+            <div class="table-panel">
+              <table id="nodelist">
+                <tr>
+                  <th>Active Node</th>
+                  <th>Info</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="Topic" class="minitabcontent">
+            <div class="table-panel wide">
+              <table id="topiclist">
+                <tr>
+                  <th>Active Topic</th>
+                  <th>Type</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="Terminal" class="minitabcontent">
+            <div id="terminalBox" class="console-panel terminal-panel">
+              <ul id="terminal"></ul>
+            </div>
+          </div>
+
+          <script>
+            function openMiniTab(evt, cityName) {
+              var i, tabcontent, tablinks;
+              tabcontent = document.getElementsByClassName("minitabcontent");
+              for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+              }
+              tablinks = document.getElementsByClassName("verticaltablink");
+              for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(
+                  " active",
+                  "",
+                );
+              }
+              document.getElementById(cityName).style.display = "block";
+              evt.currentTarget.className += " active";
+            }
+            document.getElementById("minitabdefaultOpen").click();
+          </script>
+        </div>
+
+        <div id="Contact" class="tabcontent">
+          <h3>Map</h3>
+          <p>Get in touch, or swing by for a cup of coffee.</p>
+          <h3 id="start">Press a button on your controller to start</h3>
+        </div>
+
+        <div id="About" class="tabcontent">
+          <div class="graph-placeholder"></div>
+        </div>
+      </div>
+      <div id="rightPanel" class="controlPanel">
+        <div id="joy2Div" class="joystick-host"></div>
+      </div>
+      <script>
+        function openPage(pageName, elmnt) {
+          var i, tabcontent, tablinks;
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablink");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "#0e263d";
+            tablinks[i].style.color = "#efefef";
+          }
+          var activeTab = document.getElementById(pageName);
+          activeTab.style.display = pageName === "Home" ? "flex" : "block";
+          elmnt.style.backgroundColor = "#efefef";
+          elmnt.style.color = "#0e263d";
+        }
+
+        var elem = document.documentElement;
+        var fullscreenFlag = false;
+
+        function onscreenJoystickToggle() {
+          var r = document.getElementById("rightPanel");
+          var l = document.getElementById("leftPanel");
+          if (r.style.display == "none") {
+            r.style.display = "block";
+            l.style.display = "block";
+          } else {
+            r.style.display = "none";
+            l.style.display = "none";
+          }
+        }
+
+        document.getElementById("homeButton").click();
+      </script>
+    </div>
+
+    <div class="row footer-bar" id="footer">
+      <div>
+        <button
+          onclick="fullscreenToggle()"
+          class="shortcut footer-button footer-button-accent"
+        >
+          <span class="material-symbols-outlined">fullscreen</span>
+        </button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button id="connectShortcut" class="shortcut footer-button">
+          <span id="connectIcon" class="material-symbols-outlined"
+            >link_off</span
+          >
+        </button>
+        <span
+          id="connectStatusText"
+          style="font-size: 12px; color: #efefef; white-space: nowrap"
+          >offline</span
+        >
+      </div>
+      <div>
+        <input id="linear_vel" type="text" class="robot_state" value="---" />
+      </div>
+      <div class="footer-label">m/s</div>
+      <div>
+        <input id="angular_vel" type="text" class="robot_state" value="---" />
+      </div>
+      <div class="footer-label">rad/s</div>
+      <div>
+        <input
+          id="battery_voltage"
+          type="text"
+          class="robot_state"
+          value="---"
+        />
+      </div>
+      <div>
+        <input id="battery_Wh" type="text" class="robot_state" value="---" />
+      </div>
+      <div>
+        <canvas id="linearMiniChart" class="mini-chart"></canvas>
+      </div>
+      <div>
+        <button
+          onClick="window.location.reload();"
+          class="shortcut footer-button footer-button-reload"
+        >
+          <span class="material-symbols-outlined">cached</span></button
+        ><br />
+      </div>
+      <div>
+        <button
+          onclick="onscreenJoystickToggle()"
+          class="shortcut footer-button footer-button-accent"
+        >
+          <span class="material-symbols-outlined">videogame_asset</span>
+        </button>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/socket_client.js"></script>
+    <script src="/js/oc-joy.js"></script>
+    <script src="/js/chart.js"></script>
+    <script src="/js/gamepad.js"></script>
+    <script src="/js/terminal.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>

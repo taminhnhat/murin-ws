@@ -1,0 +1,317 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/new.css" />
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+  </head>
+
+  <body>
+    <header id="header">
+      <button
+        class="header-button"
+        data-page="page-control"
+        class="header-item"
+      >
+        Control
+      </button>
+      <button
+        class="header-button"
+        data-page="page-dashboard"
+        class="header-item"
+      >
+        Dashboard
+      </button>
+      <button
+        class="header-button"
+        data-page="page-terminal"
+        class="header-item"
+      >
+        Terminal
+      </button>
+      <button
+        class="header-button"
+        data-page="page-settings"
+        class="header-item"
+      >
+        Settings
+      </button>
+      <div class="button-container">
+        <button class="footer-btn" id="menu-btn">
+          <span class="material-symbols-outlined">Menu</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="content" class="page-container">
+      <div id="fullscreen-popup" class="fullscreen-popup">
+        <div class="popup-content">
+          <h2>Fullscreen Recommended</h2>
+          <p>For the best experience, please switch to fullscreen mode.</p>
+          <button id="btn-fullscreen">Enter Fullscreen</button>
+        </div>
+      </div>
+
+      <section id="page-control" class="page-item">
+        <div id="control-panel-left" class="left-panel">
+          <label>LEFT</label>
+        </div>
+        <div id="contorl-panel-center" class="center-panel">
+          <img id="robot-img" src="/images/area.jpg" />
+          <canvas id="map-canvas"></canvas>
+
+          <div id="overlay-top-left" class="overlay">
+            <div class="axis-item">
+              <div class="axis-bar" style="height: 16px; width: 10px">
+                <div class="trigger-fill" id="left-trigger-bar"></div>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span id="left-trigger-value">0.00</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center">
+              <span class="number sign" id="vely_sign">+</span>
+              <span class="number integer" id="vely_int">00</span>
+              <span class="number dot">.</span>
+              <span class="number fraction" id="vely_frac">00</span>
+              <!-- <span class="number unit">m/s</span> -->
+            </div>
+            <div style="display: flex; align-items: center">
+              <span class="number sign" id="velx_sign">+</span>
+              <span class="number integer" id="velx_int">00</span>
+              <span class="number dot">.</span>
+              <span class="number fraction" id="velx_frac">00</span>
+              <!-- <span class="number unit">m/s</span> -->
+            </div>
+          </div>
+
+          <div id="overlay-top-right" class="overlay">
+            <div class="axis-item">
+              <div class="axis-bar" style="height: 16px; width: 10px">
+                <div class="trigger-fill" id="right-trigger-bar"></div>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span id="right-trigger-value">0.00</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center">
+              <span id="right_joystick_y">0.00</span>
+            </div>
+            <div style="display: flex; align-items: center">
+              <span id="right_joystick_x">0.00</span>
+            </div>
+          </div>
+
+          <div id="overlay-bottom-left" class="overlay">
+            <span class="material-symbols-outlined">auto_mode</span>
+            <span id="robot-mode">AUTO</span>
+          </div>
+
+          <div id="overlay-bottom-right" class="overlay">
+            <span class="material-symbols-outlined">signal_cellular_alt</span>
+            <span id="signal-level">98%</span>
+          </div>
+        </div>
+        <div id="control-panel-right" class="right-panel">RIGHT</div>
+      </section>
+
+      <section id="page-dashboard" class="page-item">
+        <div class="imu-dashboard">
+          <div class="imu-visualizer">
+            <canvas id="imu-canvas"></canvas>
+            <div id="imu-status">Waiting for IMU telemetry…</div>
+            <button id="imu-reset" type="button">Reset orientation</button>
+          </div>
+          <div class="imu-readings">
+            <h2>IMU</h2>
+            <div>
+              <span>Acceleration</span><strong id="imu-accel">—</strong
+              ><small>m/s²</small>
+            </div>
+            <div>
+              <span>Angular velocity</span><strong id="imu-gyro">—</strong
+              ><small>rad/s</small>
+            </div>
+            <div>
+              <span>Magnetic field</span><strong id="imu-mag">—</strong
+              ><small>µT</small>
+            </div>
+            <div>
+              <span>Quaternion (w,x,y,z)</span
+              ><strong id="imu-quaternion">—</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-terminal" class="page-item">
+        <div class="terminal-shell">
+          <div class="terminal-toolbar">
+            <button
+              id="terminal-status"
+              class="terminal-status"
+              type="button"
+              data-shortcut="connect"
+            >
+              Connect
+            </button>
+            <button type="button" data-shortcut="command" data-command="help">
+              Help
+            </button>
+            <button type="button" data-shortcut="command" data-command="stats">
+              Stats
+            </button>
+            <button type="button" data-shortcut="monitor" data-monitor="ros2">
+              ROS2 monitor
+            </button>
+            <button type="button" data-shortcut="monitor" data-monitor="rp3">
+              RP3 monitor
+            </button>
+            <button
+              type="button"
+              data-shortcut="monitor"
+              data-monitor="diff_drive"
+            >
+              Drive monitor
+            </button>
+            <button type="button" data-shortcut="clear">Clear</button>
+          </div>
+          <div id="terminal-window" tabindex="0">
+            <pre id="terminal-output" role="log" aria-live="polite"></pre>
+            <form id="terminal-form" autocomplete="off">
+              <label for="terminal-input">shell&gt;</label>
+              <input
+                id="terminal-input"
+                type="text"
+                maxlength="256"
+                aria-label="Console command"
+                spellcheck="false"
+              />
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-settings" class="page-item">
+        <div id="gamepad-status">
+          <!-- Controller information -->
+          <div class="gamepad-info">
+            <div class="info-item">
+              <div class="info-label">INDEX</div>
+              <div class="info-value" id="gamepad-index">-</div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">CONNECTED</div>
+              <div class="info-value" id="gamepad-connected">No</div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">MAPPING</div>
+              <div class="info-value" id="gamepad-mapping">-</div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">TIMESTAMP</div>
+              <div class="info-value" id="gamepad-timestamp">-</div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">VIBRATION</div>
+              <div class="info-value" id="gamepad-vibration">-</div>
+            </div>
+          </div>
+
+          <!-- Axes -->
+          <div class="gamepad-section">
+            <div class="gamepad-section-title">AXES</div>
+
+            <div id="gamepad-axes" class="gamepad-grid">
+              <!-- Generated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="gamepad-section">
+            <div class="gamepad-section-title">BUTTONS</div>
+
+            <div id="gamepad-buttons" class="gamepad-grid">
+              <!-- Generated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer">
+      <div class="button-container">
+        <button class="footer-btn" id="fullscreen-btn">
+          <span class="material-symbols-outlined">fullscreen</span>
+        </button>
+      </div>
+
+      <div class="button-container" style="aspect-ratio: 2">
+        <button
+          class="footer-btn"
+          id="link-state-btn"
+          style="background-color: #33b887"
+        >
+          <span id="connectIcon" class="material-symbols-outlined"
+            >link_off</span
+          >
+        </button>
+      </div>
+
+      <div class="footer-status" style="flex: 1">
+        <div class="footer-status item">
+          <span class="material-symbols-outlined">speed</span>
+          <label>v</label>
+          <span class="number sign" id="linear_sign">+</span>
+          <span class="number integer" id="linear_int">00</span>
+          <span class="number dot">.</span>
+          <span class="number fraction" id="linear_frac">00</span>
+          <span class="number unit">m/s</span>
+        </div>
+
+        <div class="footer-status item">
+          <label>ω</label>
+          <span class="number sign" id="angular_sign">+</span>
+          <span class="number integer" id="angular_int">00</span>
+          <span class="number dot">.</span>
+          <span class="number fraction" id="angular_frac">00</span>
+          <span class="number unit">rad/s</span>
+        </div>
+
+        <div class="footer-status item">
+          <span class="material-symbols-outlined">battery_full</span>
+          <span id="mode-status">91%</span>
+        </div>
+
+        <div class="footer-status item">
+          <p id="gamepad-name">Vitual JoyStick</p>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button class="footer-btn" id="reload-btn">
+          <span class="material-symbols-outlined">cached</span>
+        </button>
+      </div>
+
+      <div class="button-container">
+        <button class="footer-btn" id="os-gamepad-btn">
+          <span class="material-symbols-outlined">mobile_vibrate</span>
+        </button>
+      </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script type="module" src="/js/gamepad.js"></script>
+    <script src="/js/socket_client.js"></script>
+    <script src="/js/terminal.js"></script>
+    <script type="module" src="/js/imu.js"></script>
+  </body>
+</html>

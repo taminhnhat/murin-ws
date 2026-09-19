@@ -1,0 +1,35 @@
+{
+  "name": "murin-web",
+  "version": "1.0.0",
+  "description": "Murin robot web dashboard",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "format": "python3 scripts/tools/format-all.py",
+    "format:check": "python3 scripts/tools/format-all.py --check",
+    "test": "node --check server/index.js && node --check server/src/socket/index.js && node --check server/src/utils/robot_link.js && node --check server/src/utils/robot_socket.js && node --check server/src/utils/console_link.js && node --check server/public/js/terminal.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.4.5",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "recharts": "^2.8.0",
+    "serialport": "^13.0.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "winston": "^3.10.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prettier": "^3.6.2"
+  },
+  "author": "Ta Minh Nhat",
+  "license": "ISC",
+  "allowScripts": {
+    "@serialport/bindings-cpp@13.0.0": true
+  }
+}
