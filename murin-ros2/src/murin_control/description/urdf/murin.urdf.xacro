@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- Basic differential drive mobile base -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="murin">
+  <xacro:arg name="transport" default="simulation"/>
+  <xacro:arg name="serial_port" default=""/>
+  <xacro:arg name="baud_rate" default="2000000"/>
+  <xacro:arg name="wheel_radius" default="0.015"/>
+  <xacro:arg name="wheel_separation" default="0.10"/>
+  <xacro:arg name="require_bridge" default="false"/>
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="use_mock_hardware" default="false" />
+  <xacro:arg name="disable_commands" default="false"/>
+
+  <xacro:include filename="$(find murin_control)/urdf/murin_description.urdf.xacro" />
+
+  <!-- Import Murin ros2_control description -->
+  <xacro:include filename="$(find murin_control)/ros2_control/murin.ros2_control.xacro" />
+
+  <xacro:murin_description prefix="$(arg prefix)" wheel_radius="$(arg wheel_radius)" wheel_separation="$(arg wheel_separation)" />
+
+  <xacro:murin_ros2_control
+    transport="$(arg transport)" serial_port="$(arg serial_port)" baud_rate="$(arg baud_rate)" wheel_radius="$(arg wheel_radius)" require_bridge="$(arg require_bridge)" name="Murin" prefix="$(arg prefix)" use_mock_hardware="$(arg use_mock_hardware)" disable_commands="$(arg disable_commands)" />
+
+</robot>

@@ -1,0 +1,9 @@
+-e .[dev]
+
+# Runtime dependencies for the Socket.IO bridge.
+-r src/murin_control/requirements.txt
+
+# Testing and formatting tools.
+pytest
+ruff
+cmakelang
