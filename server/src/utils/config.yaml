@@ -1,0 +1,4 @@
+port: "COM12"
+baudrate: 2000000
+console_port: "COM10"
+console_baudrate: 115200

@@ -1,0 +1,627 @@
+* {
+  box-sizing: border-box;
+  /* Uncomment this to enable block outline */
+  /* outline: 1px solid red; */
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* --------------------------------------------Header styles------------------------------------------------- */
+
+#header {
+  display: flex;
+  /* Align items to stretch to fill the height of the footer */
+  align-items: stretch;
+  height: 8vh;
+  min-height: 24px;
+  max-height: 40px;
+}
+
+.header-button {
+  background-color: #555;
+  color: #efefef;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  flex: 1 1 0;
+  min-width: 110px;
+  padding: 0.8rem 0.5rem;
+  /* flex: 1; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 100%;
+  cursor: pointer;
+}
+
+/* --------------------------------------------Content styles------------------------------------------------- */
+
+#content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  align-items: stretch;
+}
+
+#page-control {
+  position: relative;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+#page-dashboard {
+  grid-template-columns: 200px 1fr 200px;
+}
+
+#contorl-panel-center {
+  position: relative;
+  height: 100%;
+  width: max-content;
+  max-width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+#robot-img-2 {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  /* Entire image is visible */
+  object-position: center;
+  display: block;
+}
+
+#robot-img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+
+  object-fit: contain;
+  /* Entire image is visible */
+  object-position: center;
+  display: block;
+}
+
+#map-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  pointer-events: none;
+}
+
+.page-item {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.page-item.active {
+  display: grid;
+}
+
+.overlay {
+  position: absolute;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 10ch;
+  font-family: monospace;
+  user-select: none;
+}
+
+.left-panel,
+.right-panel {
+  overflow: hidden;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+}
+
+.center-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* overflow: hidden; */
+}
+
+/* --------------------------------------------Footer styles------------------------------------------------- */
+
+#footer {
+  display: flex;
+  /* Align items to stretch to fill the height of the footer */
+  align-items: stretch;
+  height: 8vh;
+  min-height: 24px;
+  max-height: 40px;
+}
+
+.button-container {
+  height: 100%;
+  border: none;
+  outline: none;
+  flex: 0 0 auto;
+  aspect-ratio: 1.6;
+}
+
+.footer-status {
+  flex: 1;
+  display: flex;
+  background-color: #efefef;
+}
+
+.footer-status.item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Telemetry */
+
+.footer-status label {
+  width: 1.2em;
+  text-align: center;
+  margin-right: 4px;
+}
+
+.number.sign {
+  width: 1ch;
+  text-align: center;
+}
+
+.number.integer {
+  width: 2ch;
+  text-align: right;
+}
+
+.number.dot {
+  width: 0.5ch;
+  text-align: center;
+}
+
+.number.fraction {
+  width: 2ch;
+  text-align: left;
+}
+
+.number.unit {
+  margin-left: 4px;
+  opacity: 0.8;
+}
+
+.footer-status {
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-btn {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  background-color: #ff9028;
+}
+
+#linear_vel {
+  width: 6ch;
+  box-sizing: content-box;
+  /* width is just the text area */
+}
+
+#angular_vel {
+  width: 6ch;
+  box-sizing: content-box;
+  /* width is just the text area */
+}
+
+@media (max-width: 900px) {
+  #page-control {
+    grid-template-columns: 1fr;
+  }
+
+  #control-panel-left,
+  #control-panel-right {
+    display: none;
+  }
+
+  #contorl-panel-center {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #robot-img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
+}
+
+/* --------------------------------------------Fullscreem popup------------------------------------------------- */
+.fullscreen-popup {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 99999;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 320px;
+}
+
+.popup-content button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------Gamepad axis panel------------------------------------------------- */
+
+#gamepad-axis-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 180px;
+}
+
+.axis-item {
+  display: flex;
+  align-items: center;
+}
+
+.axis-bar {
+  width: 8px;
+  height: 48px;
+  background: #e8edf3;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-right: 10px;
+  position: relative;
+}
+
+.axis-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #5c7696;
+  transition: height 0.05s linear;
+}
+
+.button-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #5c7696;
+  transition: height 0.05s linear;
+}
+
+.trigger-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #5c7696;
+  transition: height 0.05s linear;
+}
+
+.axis-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.axis-name {
+  font-size: 14px;
+  color: #6d8caf;
+  text-transform: uppercase;
+}
+
+.axis-value {
+  font-size: 18px;
+  color: #000;
+  font-weight: 500;
+}
+
+#gamepad-status {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   Controller information
+   ========================= */
+
+.gamepad-info {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 35px;
+}
+
+.info-item {
+  min-width: 75px;
+}
+
+.info-label {
+  color: #6d8caf;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  color: #000;
+  font-size: 22px;
+}
+
+/* =========================
+   Sections
+   ========================= */
+
+.gamepad-section {
+  margin-bottom: 25px;
+}
+
+.gamepad-section-title {
+  color: #6d8caf;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   Axis / button grid
+   ========================= */
+
+.gamepad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 82px);
+  gap: 8px 12px;
+}
+
+/* =========================
+   Individual item
+   ========================= */
+
+.gamepad-item {
+  padding-left: 7px;
+  min-height: 45px;
+}
+
+/* --------------------------------------------IMU dashboard------------------------------------------------- */
+
+#page-dashboard {
+  grid-template-columns: 1fr;
+  background: #0b111a;
+  color: #eef4ff;
+}
+
+.imu-dashboard {
+  min-height: 0;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 18px;
+}
+
+.imu-visualizer {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+  border: 1px solid #26364b;
+  border-radius: 12px;
+  background: #101722;
+}
+
+#imu-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#imu-status {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  background: #09101bcc;
+  font: 13px monospace;
+}
+
+#imu-reset {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 8px 12px;
+  border: 1px solid #526985;
+  border-radius: 6px;
+  color: #eef4ff;
+  background: #1c2a3d;
+  cursor: pointer;
+}
+
+.imu-readings {
+  padding: 18px;
+  border: 1px solid #26364b;
+  border-radius: 12px;
+  background: #111a27;
+  font-family: system-ui, sans-serif;
+}
+
+.imu-readings h2 {
+  margin: 0 0 18px;
+}
+
+.imu-readings div {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.imu-readings span,
+.imu-readings small {
+  color: #8fa2bb;
+}
+
+.imu-readings strong {
+  overflow-wrap: anywhere;
+  font:
+    16px ui-monospace,
+    monospace;
+}
+
+@media (max-width: 760px) {
+  .imu-dashboard {
+    grid-template-columns: 1fr;
+    overflow: auto;
+  }
+
+  .imu-visualizer {
+    min-height: 360px;
+  }
+}
+
+/* --------------------------------------------Terminal------------------------------------------------- */
+
+#page-terminal {
+  background: #0b111a;
+  color: #eef4ff;
+}
+
+.terminal-shell {
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.terminal-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.terminal-toolbar button,
+.terminal-toolbar select,
+#terminal-form button,
+#terminal-input {
+  padding: 7px 10px;
+  border: 1px solid #41536b;
+  border-radius: 5px;
+  color: #eef4ff;
+  background: #172233;
+}
+
+.terminal-toolbar button,
+#terminal-form button {
+  cursor: pointer;
+}
+
+.terminal-toolbar button.gamepad-selected {
+  border-color: #ffb454;
+  box-shadow: 0 0 0 2px #ffb45466;
+}
+
+.terminal-toolbar button.monitor-active {
+  border-color: #71db91;
+  color: #07120b;
+  background: #71db91;
+}
+
+.terminal-status {
+  width: 13ch;
+  flex: 0 0 13ch;
+  padding: 7px 10px;
+  border-radius: 5px;
+  text-align: center;
+  color: #ffb3ac;
+  background: #45201f;
+}
+
+.terminal-status.connected {
+  color: #b9f6dc;
+  background: #173c31;
+}
+
+#terminal-window {
+  min-height: 0;
+  padding: 14px;
+  overflow: auto;
+  border: 1px solid #26364b;
+  border-radius: 7px;
+  color: #c9f7d4;
+  background: #05080d;
+  cursor: text;
+  outline: none;
+}
+
+#terminal-window:focus-within {
+  border-color: #4d8060;
+  box-shadow: 0 0 0 1px #4d8060;
+}
+
+#terminal-output {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+
+#terminal-form {
+  display: flex;
+  align-items: center;
+  min-height: 1.3em;
+}
+
+#terminal-form label {
+  flex: 0 0 auto;
+  margin-right: 1ch;
+  color: #71db91;
+}
+
+#terminal-input {
+  flex: 1;
+  min-width: 1ch;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  caret-color: #eef4ff;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+#terminal-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
